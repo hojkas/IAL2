@@ -139,7 +139,9 @@ void htInsert ( tHTable* ptrht, tKey key, tData data ) {
 */
 
 tData* htRead ( tHTable* ptrht, tKey key ) {
-	
+	tHTItem *to_read = htSearch(ptrht, key);
+	if(to_read == NULL) return NULL;
+	return &(to_read->data);
 }
 
 /*
@@ -153,8 +155,33 @@ tData* htRead ( tHTable* ptrht, tKey key ) {
 */
 
 void htDelete ( tHTable* ptrht, tKey key ) {
+	int index = hashCode(key);
+	tHTItem *curr_item = (*ptrht)[index];
+	//no item in line, end
+	if(curr_item == NULL) return;
 
- solved = 0; /*v pripade reseni, smazte tento radek!*/
+	if(curr_item->key == key) {
+		//first item to be deleted
+		tHTItem *next_item = curr_item->ptrnext;
+		free(curr_item);
+		(*ptrht)[index] = next_item;
+	}
+	else {
+		//not first item to be deleted
+		while(curr_item->ptrnext != NULL) {
+			//goes item after item in "line" of table, seeks the same key
+			if(curr_item->ptrnext->key == key) {
+				//found that next item is the one to be deleted
+				//sets next_item to item after the one to be deleted
+				tHTItem *next_item = curr_item->ptrnext->ptrnext;
+				free(curr_item->ptrnext);
+				curr_item->ptrnext = next_item;
+				return;
+			}
+			curr_item = curr_item->ptrnext;
+		}
+	}
+	return; //no item with key found, did nothing
 }
 
 /* TRP s explicitně zřetězenými synonymy.
