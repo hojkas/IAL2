@@ -108,20 +108,10 @@ void htInsert ( tHTable* ptrht, tKey key, tData data ) {
 		tHTItem* new_item = malloc(sizeof(struct tHTItem));
 		new_item->key = key;
 		new_item->data = data;
-		new_item->ptrnext = NULL;
 
 		int index = hashCode(key);
-		to_place = (*ptrht)[index];
-		//searches the "line" until the end is found, to_place points at empty end
-		if(to_place == NULL) {
-			//"line" is empty
-			(*ptrht)[index] = new_item;
-		}
-		else {
-			//"line" isn't empty, linking new item
-			while(to_place->ptrnext != NULL) to_place = to_place->ptrnext;
-			to_place->ptrnext = new_item;
-		}
+		new_item->ptrnext = (*ptrht)[index];
+		(*ptrht)[index] = new_item;
 	}
 	else {
 		//key was found, just actualise data
