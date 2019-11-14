@@ -65,7 +65,7 @@ int hashCode ( tKey key ) {
 */
 
 void htInit ( tHTable* ptrht ) {
-	for(int i = 0; i < MAX_HTSIZE; i++) {
+	for(int i = 0; i < HTSIZE; i++) {
 		(*ptrht)[i] = NULL;
 	}
 }
@@ -190,6 +190,16 @@ void htDelete ( tHTable* ptrht, tKey key ) {
 */
 
 void htClearAll ( tHTable* ptrht ) {
-
- solved = 0; /*v pripade reseni, smazte tento radek!*/
+	tHTItem *curr_item;
+	tHTItem *next_item;
+	for(int i = 0; i < HTSIZE; i++) {
+		//for each line in table
+		curr_item = (*ptrht)[i];
+		while(curr_item != NULL) {
+			next_item = curr_item->ptrnext;
+			free(curr_item);
+			curr_item = next_item;
+		}
+		(*ptrht)[i] = NULL;
+	}
 }
