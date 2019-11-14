@@ -10,4 +10,4 @@ $(PRJ)-test: $(PRJ).c $(PRJ)-test.c
 	$(CC) $(CFLAGS) -o $@ $(PRJ).c $(PRJ)-test.c
 
 clean:
-	rm -f *.o *.out $(PROGS)
+	rm -f *.o $(PROGS)
