@@ -65,8 +65,9 @@ int hashCode ( tKey key ) {
 */
 
 void htInit ( tHTable* ptrht ) {
-
- solved = 0; /*v pripade reseni, smazte tento radek!*/
+	for(int i = 0; i < MAX_HTSIZE; i++) {
+		(*ptrht)[i] = NULL;
+	}
 }
 
 /* TRP s explicitně zřetězenými synonymy.
@@ -77,8 +78,14 @@ void htInit ( tHTable* ptrht ) {
 */
 
 tHTItem* htSearch ( tHTable* ptrht, tKey key ) {
-
- solved = 0; /*v pripade reseni, smazte tento radek!*/
+	int index = hashCode(key);
+	tHTItem *curr_item = (*ptrht)[index];
+	while(curr_item != NULL) {
+		//goes item after item in "line" of table, seeks the same key
+		if(curr_item->key == key) return curr_item;
+		curr_item = curr_item->ptrnext;
+	}
+	return NULL; //key wasn't found
 }
 
 /*
@@ -94,8 +101,32 @@ tHTItem* htSearch ( tHTable* ptrht, tKey key ) {
 **/
 
 void htInsert ( tHTable* ptrht, tKey key, tData data ) {
+	tHTItem *to_place = htSearch(ptrht, key);
+	if(to_place == NULL) {
+		//if key is not found, hence new place needed
+		//create new_item
+		tHTItem* new_item = malloc(sizeof(struct tHTItem));
+		new_item->key = key;
+		new_item->data = data;
+		new_item->ptrnext = NULL;
 
- solved = 0; /*v pripade reseni, smazte tento radek!*/
+		int index = hashCode(key);
+		to_place = (*ptrht)[index];
+		//searches the "line" until the end is found, to_place points at empty end
+		if(to_place == NULL) {
+			//"line" is empty
+			(*ptrht)[index] = new_item;
+		}
+		else {
+			//"line" isn't empty, linking new item
+			while(to_place->ptrnext != NULL) to_place = to_place->ptrnext;
+			to_place->ptrnext = new_item;
+		}
+	}
+	else {
+		//key was found, just actualise data
+		to_place->data = data;
+	}
 }
 
 /*
@@ -108,8 +139,7 @@ void htInsert ( tHTable* ptrht, tKey key, tData data ) {
 */
 
 tData* htRead ( tHTable* ptrht, tKey key ) {
-
- solved = 0; /*v pripade reseni, smazte tento radek!*/
+	
 }
 
 /*
