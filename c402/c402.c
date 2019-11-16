@@ -178,9 +178,7 @@ void BTInit (tBTNodePtr *RootPtr)	{
 ** Všimněte si, že zde se poprvé v hlavičce objevuje typ ukazatel na ukazatel,
 ** proto je třeba při práci s RootPtr použít dereferenční operátor *.
 **/
-	
-
-	 solved = FALSE;		  /* V případě řešení smažte tento řádek! */
+	*RootPtr = NULL;
 }
 
 void BTInsert (tBTNodePtr *RootPtr, int Content) {
@@ -193,10 +191,33 @@ void BTInsert (tBTNodePtr *RootPtr, int Content) {
 ** se ve stromu může vyskytnout nejvýše jednou). Pokud se vytváří nový uzel,
 ** vzniká vždy jako list stromu. Funkci implementujte nerekurzivně.
 **/
-
-	
-
-	 solved = FALSE;		  /* V případě řešení smažte tento řádek! */
+	if(*RootPtr == NULL) {
+		//tree is empty
+		tBTNodePtr created = malloc(sizeof(struct tBTNode));
+		if(created == NULL) return;
+		created->Cont = Content;
+		created->RPtr = NULL;
+		created->LPtr = NULL;
+		*RootPtr = created;
+		return;
+	}
+	//tree isn't empty
+	tBTNodePtr *create_here = RootPtr;
+	while((*create_here) != NULL) {
+		//searches until empty node found, goes to the one or other tree
+		//based on content value
+		if((*create_here)->Cont == Content) return; //already exists
+		if((*create_here)->Cont > Content) create_here = &((*create_here)->LPtr);
+		else create_here = &((*create_here)->RPtr);
+	}
+	//if the function gets here, in *create_here is NULL, create_here
+	//is pointer to place where new node should be
+	tBTNodePtr created = malloc(sizeof(struct tBTNode));
+	if(created == NULL) return;
+	created->Cont = Content;
+	created->RPtr = NULL;
+	created->LPtr = NULL;
+	*create_here = created;
 }
 
 /*                                  PREORDER                                  */
@@ -209,7 +230,7 @@ void Leftmost_Preorder (tBTNodePtr ptr, tStackP *Stack)	{
 ** a ukazatele na ně is uložíme do zásobníku.
 **/
 
-	
+
 
 	 solved = FALSE;		  /* V případě řešení smažte tento řádek! */
 }
@@ -221,7 +242,7 @@ void BTPreorder (tBTNodePtr RootPtr)	{
 ** realizujte jako volání funkce BTWorkOut().
 **/
 
-	
+
 
 	 solved = FALSE;		  /* V případě řešení smažte tento řádek! */
 }
@@ -237,7 +258,7 @@ void Leftmost_Inorder(tBTNodePtr ptr, tStackP *Stack)		{
 ** zásobníku.
 **/
 
-	
+
 
 	 solved = FALSE;		  /* V případě řešení smažte tento řádek! */
 
@@ -250,7 +271,7 @@ void BTInorder (tBTNodePtr RootPtr)	{
 ** realizujte jako volání funkce BTWorkOut().
 **/
 
-	
+
 
 	 solved = FALSE;		  /* V případě řešení smažte tento řádek! */
 }
@@ -266,7 +287,7 @@ void Leftmost_Postorder (tBTNodePtr ptr, tStackP *StackP, tStackB *StackB) {
 ** navštíven poprvé a že se tedy ještě nemá zpracovávat.
 **/
 
-	
+
 
 	 solved = FALSE;		  /* V případě řešení smažte tento řádek! */
 }
@@ -278,7 +299,7 @@ void BTPostorder (tBTNodePtr RootPtr)	{
 ** Zpracování jednoho uzlu stromu realizujte jako volání funkce BTWorkOut().
 **/
 
-	
+
 
 	 solved = FALSE;		  /* V případě řešení smažte tento řádek! */
 }
@@ -291,10 +312,9 @@ void BTDisposeTree (tBTNodePtr *RootPtr)	{
 ** Funkci implementujte nerekurzivně s využitím zásobníku ukazatelů.
 **/
 
-	
+
 
 	 solved = FALSE;		  /* V případě řešení smažte tento řádek! */
 }
 
 /* konec c402.c */
-
